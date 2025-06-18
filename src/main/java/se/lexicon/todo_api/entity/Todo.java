@@ -33,6 +33,7 @@ public class Todo {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // orphanRemoval = true means that if an attachment is removed from the todo, it will also be deleted from the database.
     @Setter(AccessLevel.NONE) // Prevents direct modification of attachments set
     private Set<Attachment> attachments = new HashSet<>(); // 2
 
