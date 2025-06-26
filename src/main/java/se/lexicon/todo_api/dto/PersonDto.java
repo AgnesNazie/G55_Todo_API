@@ -5,6 +5,9 @@ public class PersonDto {
     private String name;
     private String email;
 
+    public PersonDto() {
+    }
+
     public PersonDto(Long id, String name, String email) {
         this.id = id;
         this.name = name;
