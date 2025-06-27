@@ -4,11 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import se.lexicon.todo_api.dto.PersonDto;
-import se.lexicon.todo_api.entity.Person;
 import se.lexicon.todo_api.repository.PersonRepository;
+import se.lexicon.todo_api.service.PersonService;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/api/v1/person")
@@ -32,19 +30,34 @@ public class PersonController {
      }
 
      */
-    PersonRepository personRepository;
+    PersonService personService;
 
     @Autowired
-    public PersonController(PersonRepository personRepository) {
-        this.personRepository = personRepository;
+    public PersonController(PersonService personService) {
+        this.personService = personService;
     }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<PersonDto> findAll() {
-        return personRepository.findAll().stream()
-                .map(person -> new PersonDto(person.getId(), person.getName(), person.getEmail()))
-                .toList();
-
+        return personService.findAll();
     }
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public PersonDto getPersonById(@PathVariable ("id") Long personId) {
+        System.out.println("personId: " + personId);
+        return personService.findById(personId);
+    }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public PersonDto createPerson(@RequestBody PersonDto personDto) {
+        System.out.println("personDto: " + personDto);
+        return personService.create(personDto);
+    }
+    //Delete person by id
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePerson(@PathVariable ("id") Long personId) {
+        personService.delete(personId);
+    }
+
 }
